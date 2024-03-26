@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
   [SerializeField]
    float cameraAngle = 90;
    [SerializeField]
-   int cameraDistance = 10;
+   int cameraDistance = 5;
    float _rotationX = 0f;
    float _rotationY = 0f;
    bool rightMouseCamera = false;
@@ -28,11 +28,14 @@ public class CameraFollow : MonoBehaviour
 
  private void Update()
  {
-   // _rotationY += Input.GetAxisRaw("Mouse Y") * sensitivity;
-   // _rotationX += Input.GetAxisRaw("Mouse X") * -1 * sensitivity;
+  
+   _rotationX = Input.GetAxisRaw("Mouse X") * sensitivity;
 
  
-   // }
+   if(Input.GetMouseButton(1))
+    {
+      cameraAngle += _rotationX;
+    }
 
     Vector3 targetPosition = target.position + _offset;
     transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, smoothTime);
@@ -40,14 +43,14 @@ public class CameraFollow : MonoBehaviour
     Vector3 placeholder = PosFromAngle(cameraAngle);
     Vector3 cameraPos = player.transform.position + placeholder * cameraDistance;
     transform.position = cameraPos;
-    // transform.RotateAround(player.transform.position, transform.forward, cameraAngle);
+    
  }
 
  
  public Vector3 PosFromAngle(float angle)
  {
    angle += transform.eulerAngles.y;
-   return new Vector3(Mathf.Sin(angle* Mathf.Deg2Rad), 1, Mathf.Cos(angle * Mathf.Deg2Rad));
+   return new Vector3(Mathf.Sin(angle* Mathf.Deg2Rad), 0.8f, Mathf.Cos(angle * Mathf.Deg2Rad));
  }
 
 
