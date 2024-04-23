@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,6 +13,8 @@ public class AgentContoller : MonoBehaviour
     [SerializeField]
     GameObject target;
 
+   
+
     public LayerMask PlayerLayer, GroundLayer;
     float Walkpointrange = 3;
 
@@ -20,9 +23,9 @@ public class AgentContoller : MonoBehaviour
     bool walkpointSet;
     public bool playerOnSight, playerInAttackDistance, PlayerInHit;
     public float sight, attackDistance;
-    float attackCoolDown = 10;
+    float attackCoolDown = 1;
     Vector3 attackArea =  new Vector3(1.5f, 0.1f, 0.5f);
-
+   
 
     void Awake()
     {
@@ -78,6 +81,7 @@ public class AgentContoller : MonoBehaviour
         Vector3 distanceFromTarget = transform.position - walktarget;
         
         if(distanceFromTarget.magnitude < 1f) walkpointSet = false;
+        
     }
       private void Attacking()
     {
@@ -88,11 +92,14 @@ public class AgentContoller : MonoBehaviour
         {
             if (PlayerInHit)
             {
-             Debug.Log("cum");
-            attackCoolDown = 3;
+                GetComponentInChildren<Animator>().SetTrigger("IsAttackTrigger"); 
+               
+            
+            attackCoolDown = 1;
             }
         }
     }
+
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;

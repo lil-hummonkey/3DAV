@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     Vector2 inputVector = Vector2.zero;
     CharacterController characterController;
 
-    [SerializeField]
+    // [SerializeField]
     float speed = 2;
     [SerializeField]
     float gravityForce = 2;
@@ -41,6 +41,18 @@ public class PlayerController : MonoBehaviour
         }
         // Horiz
         Vector3 movement = Camera.main.transform.right * inputVector.x + Camera.main.transform.forward * inputVector.y;
+
+           if(movement != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
+        {
+            
+            speed = 5;
+        }
+        else speed = 2;
+       
+    
+
+        movement *= speed;
+
 
         // Move Anim
         if (movement.x != 0 || movement.z != 0)
@@ -73,6 +85,10 @@ public class PlayerController : MonoBehaviour
             GetComponent<Animator>().SetTrigger("Attacking");
         }
         // else GetComponent<Animator>().SetBool("Attacking", false);
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        Debug.Log("Entered collision with " + collision.gameObject.name);
     }
     private void OnMove(InputValue value) => inputVector = value.Get<Vector2>();
     void OnJump(InputValue value) => jumpPressed = true;
